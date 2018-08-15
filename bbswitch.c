@@ -291,9 +291,6 @@ static int bbswitch_pci_runtime_suspend(struct device *dev)
 
     pr_info("disabling discrete graphics\n");
 
-    /* Ensure that the audio driver knows not to touch us. */
-    vga_switcheroo_set_dynamic_switch(pdev, VGA_SWITCHEROO_OFF);
-
     bbswitch_optimus_dsm();
 
     /* Save state now that the device is still awake, makes PCI layer happy */
@@ -308,9 +305,7 @@ static int bbswitch_pci_runtime_resume(struct device *dev)
     struct pci_dev *pdev = to_pci_dev(dev);
 
     pr_debug("Finishing runtime resume.\n");
-
-    /* Resume audio driver. */
-    vga_switcheroo_set_dynamic_switch(pdev, VGA_SWITCHEROO_ON);
+    
     return 0;
 }
 
